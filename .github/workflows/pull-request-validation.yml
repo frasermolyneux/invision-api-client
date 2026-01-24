@@ -28,5 +28,7 @@ jobs:
 
     - uses: frasermolyneux/actions/dotnet-ci@main
       with:
-        dotnet-version: 9.0.x
+        dotnet-version: |
+          9.0.x
+          10.0.x
         src-folder: "src"

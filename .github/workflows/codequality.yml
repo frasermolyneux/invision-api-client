@@ -18,7 +18,9 @@ jobs:
     with:
       sonar-project-key: frasermolyneux_invision-api-client
       build-target: dotnet-ci
-      dotnet-version: 9.0.x
+      dotnet-version: |
+        9.0.x
+        10.0.x
       src-folder: src
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
