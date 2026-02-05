@@ -1,17 +1,15 @@
-# invision-api-client
+# MX.InvisionCommunity.Api.Client
 
-Invision Community API Client
+Invision Community API client packaged as `MX.InvisionCommunity.Api.Client` on NuGet.
 
-## .NET Support
+## Build & test
+- `dotnet build src/MX.InvisionCommunity.sln`
+- `dotnet test src` (tests not yet present; keeps workflow compatibility)
 
-This library targets .NET 9 and .NET 10 using multi-targeting. The NuGet package contains assemblies for both target frameworks.
+## Releases
+- Versioning uses Nerdbank.GitVersioning (`version.json`) with tags `v<semver>`.
+- CI/CD aligns with `cod-demo-reader`: feature/bugfix/hotfix pushes run Build and Test; PRs run PR Verify; main pushes run Release - Version and Tag, followed by Release - Publish NuGet.
 
-### Build Requirements
-- .NET 9 SDK
-- .NET 10 SDK
-
-### Dependency Management
-Dependencies are maintained at versions compatible with both .NET 9 and .NET 10. Dependabot is configured to automatically update minor and patch versions only; major version updates require manual review.
-
-### CI/CD
-All GitHub workflows build and test against both .NET 9 and .NET 10 to ensure compatibility across both target frameworks.
+## Package info
+- Package Id: `MX.InvisionCommunity.Api.Client`
+- Repository: https://github.com/frasermolyneux/invision-api-client
