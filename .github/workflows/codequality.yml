@@ -44,9 +44,6 @@ jobs:
       pull-requests: read
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
