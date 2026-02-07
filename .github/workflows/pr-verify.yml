@@ -6,11 +6,12 @@ on:
       - main
     types: [opened, synchronize, reopened, ready_for_review]
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   build-and-test:
+    permissions:
+      contents: read
     if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     steps:
