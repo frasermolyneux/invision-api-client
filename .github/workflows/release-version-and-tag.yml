@@ -8,11 +8,12 @@ on:
     paths:
       - 'src/**'
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   calculate-version:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     outputs:
       semver: ${{ steps.capture_version.outputs.semver }}
@@ -74,6 +75,8 @@ jobs:
           "tag_name=$tagName" | Out-File -FilePath $Env:GITHUB_OUTPUT -Encoding utf8 -Append
 
   dotnet-ci:
+    permissions:
+      contents: read
     needs: calculate-version
     runs-on: ubuntu-latest
     env:
@@ -88,14 +91,14 @@ jobs:
           src-folder: "src"
 
   tag-release:
+    permissions:
+      contents: write
     needs:
       - calculate-version
       - dotnet-ci
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    
     if: needs.calculate-version.outputs.should_tag == 'true'
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
