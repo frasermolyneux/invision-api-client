@@ -1,15 +1,20 @@
 # MX.InvisionCommunity.Api.Client
+[![Build and Test](https://github.com/frasermolyneux/invision-api-client/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/frasermolyneux/invision-api-client/actions/workflows/build-and-test.yml)
+[![Code Quality](https://github.com/frasermolyneux/invision-api-client/actions/workflows/codequality.yml/badge.svg)](https://github.com/frasermolyneux/invision-api-client/actions/workflows/codequality.yml)
+[![Dependabot Automerge](https://github.com/frasermolyneux/invision-api-client/actions/workflows/dependabot-automerge.yml/badge.svg)](https://github.com/frasermolyneux/invision-api-client/actions/workflows/dependabot-automerge.yml)
+[![PR Verify](https://github.com/frasermolyneux/invision-api-client/actions/workflows/pr-verify.yml/badge.svg)](https://github.com/frasermolyneux/invision-api-client/actions/workflows/pr-verify.yml)
+[![Release Version and Tag](https://github.com/frasermolyneux/invision-api-client/actions/workflows/release-version-and-tag.yml/badge.svg)](https://github.com/frasermolyneux/invision-api-client/actions/workflows/release-version-and-tag.yml)
+[![Release Publish NuGet](https://github.com/frasermolyneux/invision-api-client/actions/workflows/release-publish-nuget.yml/badge.svg)](https://github.com/frasermolyneux/invision-api-client/actions/workflows/release-publish-nuget.yml)
 
-Invision Community API client packaged as `MX.InvisionCommunity.Api.Client` on NuGet.
+## Documentation
+- [Development Workflows](docs/development-workflows.md) - Local commands, CI/CD, and release automation
+- [Architecture Overview](docs/architecture-overview.md) - Client composition, REST endpoints, and telemetry patterns
 
-## Build & test
-- `dotnet build src/MX.InvisionCommunity.sln`
-- `dotnet test src` (tests not yet present; keeps workflow compatibility)
+## Overview
+REST client library for the Invision Community API packaged as `MX.InvisionCommunity.Api.Client` for .NET 9 and 10. Requests are issued via RestSharp with Basic auth using the API key and serialized through Newtonsoft.Json, with Application Insights dependency telemetry for every call. The DI helper `AddInvisionApiClient` wires typed clients for core, downloads, and forums endpoints plus aggregated access through `IInvisionApiClient`. Nerdbank.GitVersioning in `version.json` drives package versions published through the release workflows.
 
-## Releases
-- Versioning uses Nerdbank.GitVersioning (`version.json`) with tags `v<semver>`.
-- CI/CD aligns with `cod-demo-reader`: feature/bugfix/hotfix pushes run Build and Test; PRs run PR Verify; main pushes run Release - Version and Tag, followed by Release - Publish NuGet.
+## Contributing
+Please read the [contributing](CONTRIBUTING.md) guidance; this is a learning and development project.
 
-## Package info
-- Package Id: `MX.InvisionCommunity.Api.Client`
-- Repository: https://github.com/frasermolyneux/invision-api-client
+## Security
+Please read the [security](SECURITY.md) guidance; I am always open to security feedback through email or opening an issue.
