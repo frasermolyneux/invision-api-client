@@ -1,10 +1,11 @@
 # MX.InvisionCommunity.Api.Client
 [![Build and Test](https://github.com/frasermolyneux/invision-api-client/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/frasermolyneux/invision-api-client/actions/workflows/build-and-test.yml)
 [![Code Quality](https://github.com/frasermolyneux/invision-api-client/actions/workflows/codequality.yml/badge.svg)](https://github.com/frasermolyneux/invision-api-client/actions/workflows/codequality.yml)
+[![Copilot Setup Steps](https://github.com/frasermolyneux/invision-api-client/actions/workflows/copilot-setup-steps.yml/badge.svg)](https://github.com/frasermolyneux/invision-api-client/actions/workflows/copilot-setup-steps.yml)
 [![Dependabot Automerge](https://github.com/frasermolyneux/invision-api-client/actions/workflows/dependabot-automerge.yml/badge.svg)](https://github.com/frasermolyneux/invision-api-client/actions/workflows/dependabot-automerge.yml)
 [![PR Verify](https://github.com/frasermolyneux/invision-api-client/actions/workflows/pr-verify.yml/badge.svg)](https://github.com/frasermolyneux/invision-api-client/actions/workflows/pr-verify.yml)
-[![Release Version and Tag](https://github.com/frasermolyneux/invision-api-client/actions/workflows/release-version-and-tag.yml/badge.svg)](https://github.com/frasermolyneux/invision-api-client/actions/workflows/release-version-and-tag.yml)
 [![Release Publish NuGet](https://github.com/frasermolyneux/invision-api-client/actions/workflows/release-publish-nuget.yml/badge.svg)](https://github.com/frasermolyneux/invision-api-client/actions/workflows/release-publish-nuget.yml)
+[![Release Version and Tag](https://github.com/frasermolyneux/invision-api-client/actions/workflows/release-version-and-tag.yml/badge.svg)](https://github.com/frasermolyneux/invision-api-client/actions/workflows/release-version-and-tag.yml)
 
 ## Documentation
 - [Development Workflows](docs/development-workflows.md) - Local commands, CI/CD, and release automation
