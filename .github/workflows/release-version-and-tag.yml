@@ -96,9 +96,8 @@ jobs:
     needs:
       - calculate-version
       - dotnet-ci
-    runs-on: ubuntu-latest
-    
     if: needs.calculate-version.outputs.should_tag == 'true'
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
