@@ -39,9 +39,7 @@ namespace MX.InvisionCommunity.Api.Client
         {
             var request = new RestRequest(resource, method);
 
-#pragma warning disable CS8604 // Possible null reference argument.
             request.AddHeader("Authorization", $"Basic {Convert.ToBase64String(Encoding.UTF8.GetBytes(options.Value.ApiKey))}");
-#pragma warning restore CS8604 // Possible null reference argument.
 
             return request;
         }
