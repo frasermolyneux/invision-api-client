@@ -1,9 +1,14 @@
-﻿namespace MX.InvisionCommunity.Api.Client
+﻿using MX.Api.Client.Configuration;
+
+namespace MX.InvisionCommunity.Api.Client
 {
-    public class InvisionApiClientOptions
+    public class InvisionApiClientOptions : ApiClientOptionsBase
     {
-        public string BaseUrl { get; set; } = string.Empty;
-        public string ApiKey { get; set; } = string.Empty;
-        public string? ApiPathPrefix { get; set; } = null;
+        public string? ApiPathPrefix { get; set; }
+
+        public override void Validate()
+        {
+            base.Validate();
+        }
     }
 }

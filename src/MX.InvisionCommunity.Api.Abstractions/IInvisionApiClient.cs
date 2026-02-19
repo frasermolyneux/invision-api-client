@@ -1,6 +1,6 @@
-﻿using MX.InvisionCommunity.Api.Client.Interfaces;
+using MX.InvisionCommunity.Api.Abstractions.Interfaces;
 
-namespace MX.InvisionCommunity.Api.Client
+namespace MX.InvisionCommunity.Api.Abstractions
 {
     public interface IInvisionApiClient
     {

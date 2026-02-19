@@ -1,22 +1,24 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
+using MX.Api.Client.Extensions;
+using MX.InvisionCommunity.Api.Abstractions;
+using MX.InvisionCommunity.Api.Abstractions.Interfaces;
 using MX.InvisionCommunity.Api.Client.Api;
-using MX.InvisionCommunity.Api.Client.Interfaces;
 
 namespace MX.InvisionCommunity.Api.Client
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddInvisionApiClient(this IServiceCollection serviceCollection,
-            Action<InvisionApiClientOptions> options)
+        public static IServiceCollection AddInvisionApiClient(this IServiceCollection serviceCollection,
+            Action<InvisionApiClientOptionsBuilder> configureOptions)
         {
-            serviceCollection.Configure(options);
+            serviceCollection.AddTypedApiClient<ICoreApi, CoreApi, InvisionApiClientOptions, InvisionApiClientOptionsBuilder>(configureOptions);
+            serviceCollection.AddTypedApiClient<IDownloadsApi, DownloadsApi, InvisionApiClientOptions, InvisionApiClientOptionsBuilder>(configureOptions);
+            serviceCollection.AddTypedApiClient<IForumsApi, ForumsApi, InvisionApiClientOptions, InvisionApiClientOptionsBuilder>(configureOptions);
 
-            serviceCollection.AddSingleton<ICoreApi, CoreApi>();
-            serviceCollection.AddSingleton<IDownloadsApi, DownloadsApi>();
-            serviceCollection.AddSingleton<IForumsApi, ForumsApi>();
+            serviceCollection.AddScoped<IInvisionApiClient, InvisionApiClient>();
 
-            serviceCollection.AddSingleton<IInvisionApiClient, InvisionApiClient>();
+            return serviceCollection;
         }
     }
 }

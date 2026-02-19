@@ -1,13 +1,35 @@
 # Copilot Instructions
 
-- Purpose: REST client library for the Invision Community API, packaged as `MX.InvisionCommunity.Api.Client` for .NET 9/10.
-- Layout: code lives under `src/MX.InvisionCommunity.Api.Client/` with feature clients in `Api/`, interfaces in `Interfaces/`, models in `Models/`, DI helpers in `ServiceCollectionExtensions.cs`, and shared plumbing in `BaseApi.cs`.
-- Options: `InvisionApiClientOptions` requires `BaseUrl` and `ApiKey`, with optional `ApiPathPrefix`; missing values throw during construction.
-- HTTP behavior: `BaseApi` builds a RestSharp `RestClient`, injects Basic auth using the API key, and emits Application Insights dependency telemetry (`InvisionRestApi` with target `BaseUrl`). Non-success responses log errors; 404 handling is explicit where used.
-- Feature clients: `CoreApi` (`GetCoreHello`, `GetMember` returning `null` on 404), `DownloadsApi` (`GetDownloadFile`), `ForumsApi` (`PostTopic` returning `TopicId`/`FirstPostId`, `UpdateTopic`). All deserialize with Newtonsoft.Json and throw when responses lack content.
-- Aggregation: `InvisionApiClient` exposes the feature clients via `IInvisionApiClient`. `ServiceCollectionExtensions.AddInvisionApiClient` registers options and all clients as singletons for DI consumption.
-- Build/test: `dotnet build src/MX.InvisionCommunity.sln`; `dotnet test src` (no tests yet, retained for workflow parity). Packages are produced on build (`GeneratePackageOnBuild`).
-- Versioning & release: Nerdbank.GitVersioning (`version.json`) sets package versions; release automation runs `release-version-and-tag.yml` then `release-publish-nuget.yml` to push the NuGet package.
-- CI/CD workflows: `build-and-test.yml`, `pr-verify.yml`, `codequality.yml`, `dependabot-automerge.yml`, `release-version-and-tag.yml`, `release-publish-nuget.yml`.
-- Telemetry: callers must supply a configured `TelemetryClient` (e.g., via DI); exceptions from RestSharp are tracked and re-thrown.
-- Extending: add new endpoints by deriving from `BaseApi`, adding an interface under `Interfaces/`, registering in `ServiceCollectionExtensions`, and updating `InvisionApiClient` to surface the client.
+## Architecture
+- .NET 9/10 solution in `src/MX.InvisionCommunity.sln` providing a REST client library for the Invision Community API.
+- Three NuGet packages are published: `MX.InvisionCommunity.Api.Abstractions` (interfaces/models), `MX.InvisionCommunity.Api.Client` (typed HTTP client), and `MX.InvisionCommunity.Api.Client.Testing` (in-memory fakes and DTO factories for consumer test projects).
+- Built on the `MX.Api.Client` / `MX.Api.Abstractions` shared framework providing `BaseApi<TOptions>`, `ApiResult<T>` response envelopes, retry policies (Polly exponential backoff), pluggable authentication, and `IRestClientService` abstraction.
+
+## Project Layout
+- `MX.InvisionCommunity.Api.Abstractions/` — Interfaces (`ICoreApi`, `IDownloadsApi`, `IForumsApi`, `IInvisionApiClient`) and DTO models (all suffixed with `Dto`: `MemberDto`, `CoreHelloDto`, `DownloadFileDto`, etc.). Internal setters on DTOs; `InternalsVisibleTo` grants access to client, testing, and test projects.
+- `MX.InvisionCommunity.Api.Client/` — Implementation. Feature clients (`CoreApi`, `DownloadsApi`, `ForumsApi`) extend `BaseApi<InvisionApiClientOptions>`. `InvisionApiClient` aggregates them. `ServiceCollectionExtensions.AddInvisionApiClient()` uses `AddTypedApiClient<>()` for DI registration with fluent `InvisionApiClientOptionsBuilder`.
+- `MX.InvisionCommunity.Api.Client.Testing/` — `FakeInvisionApiClient`, `FakeCoreApi`, `FakeDownloadsApi`, `FakeForumsApi` (thread-safe fakes with configurable responses, error simulation, call tracking, reset). `InvisionDtoFactory` provides static factory methods for all DTOs. `AddFakeInvisionApiClient()` DI extension for integration tests.
+- `MX.InvisionCommunity.Api.Client.Testing.Tests/` — xUnit + coverlet unit tests for all fakes, factories, and DI registration.
+
+## Options & Configuration
+- `InvisionApiClientOptions` extends `ApiClientOptionsBase` from `MX.Api.Client` with optional `ApiPathPrefix`.
+- `InvisionApiClientOptionsBuilder` extends `ApiClientOptionsBuilder<TOptions, TBuilder>` for fluent configuration.
+- DI registration: `services.AddInvisionApiClient(builder => builder.WithBaseUrl("...").WithApiKeyAuthentication("..."))`.
+
+## API Methods & Response Pattern
+- All methods return `ApiResult<T>` (from `MX.Api.Abstractions`) wrapping `HttpStatusCode`, `ApiResponse<T>` (with `Data`, `Errors`), and helpers (`IsSuccess`, `IsNotFound`).
+- All async methods accept `CancellationToken cancellationToken = default`.
+- Methods never throw; client-side errors return `ApiResult` with `HttpStatusCode.InternalServerError` and `ApiError("CLIENT_ERROR", "...")`.
+- Feature clients: `CoreApi` (`GetCoreHello`, `GetMember`), `DownloadsApi` (`GetDownloadFile`), `ForumsApi` (`PostTopic`, `UpdateTopic`). All deserialize with Newtonsoft.Json.
+
+## Build/Test
+- `dotnet build src/MX.InvisionCommunity.sln`
+- `dotnet test src/MX.InvisionCommunity.sln` — xUnit unit tests for testing package. Test framework: xUnit + coverlet + native assertions.
+- Packages are produced on build (`GeneratePackageOnBuild`).
+
+## Versioning & Release
+- Nerdbank.GitVersioning (`version.json`) sets package versions.
+- Release automation: `release-version-and-tag.yml` → `release-publish-nuget.yml` to push NuGet packages.
+
+## Extending
+- Add new endpoints by deriving from `BaseApi<InvisionApiClientOptions>`, adding an interface under `MX.InvisionCommunity.Api.Abstractions/Interfaces/`, registering via `AddTypedApiClient<>()` in `ServiceCollectionExtensions`, and updating `InvisionApiClient` to surface the client. Add corresponding fake and factory methods in the testing package.
