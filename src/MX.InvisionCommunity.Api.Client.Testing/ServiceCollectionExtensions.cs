@@ -20,7 +20,7 @@ public static class ServiceCollectionExtensions
         services.RemoveAll<IForumsApi>();
         services.RemoveAll<IInvisionApiClient>();
 
-        services.AddSingleton<FakeInvisionApiClient>(fake);
+        services.AddSingleton(fake);
         services.AddSingleton<ICoreApi>(fake.CoreApi);
         services.AddSingleton<IDownloadsApi>(fake.DownloadsApi);
         services.AddSingleton<IForumsApi>(fake.ForumsApi);
