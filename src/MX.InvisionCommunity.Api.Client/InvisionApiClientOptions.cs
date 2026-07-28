@@ -1,4 +1,4 @@
-﻿using MX.Api.Client.Configuration;
+using MX.Api.Client.Configuration;
 
 namespace MX.InvisionCommunity.Api.Client
 {

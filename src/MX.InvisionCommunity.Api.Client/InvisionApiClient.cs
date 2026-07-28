@@ -1,4 +1,4 @@
-﻿using MX.InvisionCommunity.Api.Abstractions;
+using MX.InvisionCommunity.Api.Abstractions;
 using MX.InvisionCommunity.Api.Abstractions.Interfaces;
 
 namespace MX.InvisionCommunity.Api.Client
