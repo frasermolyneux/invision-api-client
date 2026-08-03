@@ -19,18 +19,23 @@ namespace MX.InvisionCommunity.Api.Client
             ArgumentNullException.ThrowIfNull(serviceCollection);
             ArgumentNullException.ThrowIfNull(configureOptions);
 
-            // Probe the consumer's configuration once to capture any WithCaching(...) delegate. This lets us build a
-            // single SharedCacheConfiguration and reuse it across every typed sub-API registration below without
-            // triggering MX.Api.Client's single-client scope check for cache expressions that target sibling
-            // interfaces (see MX.Api.Client 2.3.77 SharedCacheConfiguration).
-            var probe = new InvisionApiClientOptionsBuilder();
-            configureOptions(probe);
-            var capturedCache = probe.CapturedCacheConfigure;
-            var sharedCache = capturedCache is null ? null : new SharedCacheConfiguration(capturedCache);
+            // Lazily capture the consumer's WithCaching(...) delegate the first time PerClient runs so that we
+            // invoke configureOptions exactly once per typed sub-API registration (matching the pre-change
+            // behaviour: no extra invocation for side effects, expensive setup, or one-time reads). The captured
+            // delegate is then wrapped in a single SharedCacheConfiguration and reused across every subsequent
+            // registration, which is what lets MX.Api.Client 2.3.77 apply the sibling-interface expressions without
+            // triggering the single-client scope check.
+            SharedCacheConfiguration? sharedCache = null;
 
             void PerClient(InvisionApiClientOptionsBuilder builder)
             {
                 configureOptions(builder);
+
+                if (sharedCache is null && builder.CapturedCacheConfigure is not null)
+                {
+                    sharedCache = new SharedCacheConfiguration(builder.CapturedCacheConfigure);
+                }
+
                 if (sharedCache is not null)
                 {
                     builder.WithSharedCaching(sharedCache);
