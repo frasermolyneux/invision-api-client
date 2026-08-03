@@ -25,20 +25,24 @@ namespace MX.InvisionCommunity.Api.Client
             // delegate is then wrapped in a single SharedCacheConfiguration and reused across every subsequent
             // registration, which is what lets MX.Api.Client 2.3.77 apply the sibling-interface expressions without
             // triggering the single-client scope check.
-            SharedCacheConfiguration? sharedCache = null;
+            //
+            // The capture is stored on a holder object rather than a mutable local so that dataflow analysers
+            // (Sonar, in particular) can reason about the post-registration null-check on Shared without treating
+            // the mutation through the PerClient local function as unreachable.
+            var capture = new SharedCacheCapture();
 
             void PerClient(InvisionApiClientOptionsBuilder builder)
             {
                 configureOptions(builder);
 
-                if (sharedCache is null && builder.CapturedCacheConfigure is not null)
+                if (capture.Shared is null && builder.CapturedCacheConfigure is not null)
                 {
-                    sharedCache = new SharedCacheConfiguration(builder.CapturedCacheConfigure);
+                    capture.Shared = new SharedCacheConfiguration(builder.CapturedCacheConfigure);
                 }
 
-                if (sharedCache is not null)
+                if (capture.Shared is not null)
                 {
-                    builder.WithSharedCaching(sharedCache);
+                    builder.WithSharedCaching(capture.Shared);
                 }
             }
 
@@ -53,11 +57,16 @@ namespace MX.InvisionCommunity.Api.Client
 
             // Fail fast on typos: any captured operation that didn't match one of the typed clients above surfaces
             // as InvalidOperationException at composition time rather than as a silent no-op at runtime.
-            sharedCache?.ValidateAllOperationsMatched();
+            capture.Shared?.ValidateAllOperationsMatched();
 
             serviceCollection.AddScoped<IInvisionApiClient, InvisionApiClient>();
 
             return serviceCollection;
+        }
+
+        private sealed class SharedCacheCapture
+        {
+            public SharedCacheConfiguration? Shared { get; set; }
         }
     }
 }
