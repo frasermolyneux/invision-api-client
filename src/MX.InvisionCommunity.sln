@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MX.InvisionCommunity.Api.Cl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MX.InvisionCommunity.Api.Client.Testing.Tests", "MX.InvisionCommunity.Api.Client.Testing.Tests\MX.InvisionCommunity.Api.Client.Testing.Tests.csproj", "{A41AEFEF-A431-4894-94FE-3C3BD7A5F3CC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MX.InvisionCommunity.Api.Client.Tests", "MX.InvisionCommunity.Api.Client.Tests\MX.InvisionCommunity.Api.Client.Tests.csproj", "{A0E40D0E-13E3-4C05-B64B-0CDF0770047A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,18 @@ Global
 		{A41AEFEF-A431-4894-94FE-3C3BD7A5F3CC}.Release|x64.Build.0 = Release|Any CPU
 		{A41AEFEF-A431-4894-94FE-3C3BD7A5F3CC}.Release|x86.ActiveCfg = Release|Any CPU
 		{A41AEFEF-A431-4894-94FE-3C3BD7A5F3CC}.Release|x86.Build.0 = Release|Any CPU
+		{A0E40D0E-13E3-4C05-B64B-0CDF0770047A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0E40D0E-13E3-4C05-B64B-0CDF0770047A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0E40D0E-13E3-4C05-B64B-0CDF0770047A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A0E40D0E-13E3-4C05-B64B-0CDF0770047A}.Debug|x64.Build.0 = Debug|Any CPU
+		{A0E40D0E-13E3-4C05-B64B-0CDF0770047A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A0E40D0E-13E3-4C05-B64B-0CDF0770047A}.Debug|x86.Build.0 = Debug|Any CPU
+		{A0E40D0E-13E3-4C05-B64B-0CDF0770047A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0E40D0E-13E3-4C05-B64B-0CDF0770047A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0E40D0E-13E3-4C05-B64B-0CDF0770047A}.Release|x64.ActiveCfg = Release|Any CPU
+		{A0E40D0E-13E3-4C05-B64B-0CDF0770047A}.Release|x64.Build.0 = Release|Any CPU
+		{A0E40D0E-13E3-4C05-B64B-0CDF0770047A}.Release|x86.ActiveCfg = Release|Any CPU
+		{A0E40D0E-13E3-4C05-B64B-0CDF0770047A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
