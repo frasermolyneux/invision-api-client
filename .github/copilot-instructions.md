@@ -1,25 +1,31 @@
 # Copilot Instructions
 
-> Shared conventions: see [`.github-copilot/.github/instructions/dotnet-nuget-library.instructions.md`](../../.github-copilot/.github/instructions/dotnet-nuget-library.instructions.md) for general .NET NuGet library standards, and [`.github-copilot/.github/instructions/dotnet-api-client-libraries.instructions.md`](../../.github-copilot/.github/instructions/dotnet-api-client-libraries.instructions.md) for the typed API client patterns layered on top (three-package pattern, fluent DI builder, `ApiResult<T>` envelope, authentication options, testing-package conventions).
+This repository publishes a typed Invision Community API client as three packages: abstractions, implementation, and consumer testing helpers.
 
-## Architecture
-- .NET 9/10 solution in `src/MX.InvisionCommunity.sln` providing a REST client library for the Invision Community API.
-- Three packages: `MX.InvisionCommunity.Api.Abstractions`, `MX.InvisionCommunity.Api.Client`, `MX.InvisionCommunity.Api.Client.Testing`.
-- Built on the `MX.Api.Client` / `MX.Api.Abstractions` shared framework (see `api-client-abstractions` repo) — Polly retries, pluggable authentication, `IRestClientService` abstraction.
+## Runtime and layout
 
-## Project Layout
-- `MX.InvisionCommunity.Api.Abstractions/` — Interfaces (`ICoreApi`, `IDownloadsApi`, `IForumsApi`, `IInvisionApiClient`) and DTO models (all suffixed with `Dto`: `MemberDto`, `CoreHelloDto`, `DownloadFileDto`, etc.).
-- `MX.InvisionCommunity.Api.Client/` — Implementation. Feature clients (`CoreApi`, `DownloadsApi`, `ForumsApi`) extend `BaseApi<InvisionApiClientOptions>`. `InvisionApiClient` aggregates them. `ServiceCollectionExtensions.AddInvisionApiClient()` uses `AddTypedApiClient<>()` for DI registration with fluent `InvisionApiClientOptionsBuilder`.
-- `MX.InvisionCommunity.Api.Client.Testing/` — `FakeInvisionApiClient`, `FakeCoreApi`, `FakeDownloadsApi`, `FakeForumsApi` with thread-safe configurable responses, error simulation, call tracking, reset. `InvisionDtoFactory` provides static factory methods for all DTOs.
-- `MX.InvisionCommunity.Api.Client.Testing.Tests/` — xUnit + coverlet unit tests for all fakes, factories, and DI registration.
+- SDK: `10.0.301` from `global.json`.
+- Package projects target `net9.0` and `net10.0`; test projects target `net9.0`.
+- Solution: `src/MX.InvisionCommunity.sln`.
+- Packages: `MX.InvisionCommunity.Api.Abstractions`, `MX.InvisionCommunity.Api.Client`, and `MX.InvisionCommunity.Api.Client.Testing`.
 
-## Repo-specific Options
-- `InvisionApiClientOptions` extends `ApiClientOptionsBase` from `MX.Api.Client` with optional `ApiPathPrefix`.
-- `InvisionApiClientOptionsBuilder` extends `ApiClientOptionsBuilder<TOptions, TBuilder>` for fluent configuration.
+## Repository rules
 
-## API Surface
-- Feature clients: `CoreApi` (`GetCoreHello`, `GetMember`), `DownloadsApi` (`GetDownloadFile`), `ForumsApi` (`PostTopic`, `UpdateTopic`).
-- All deserialize with Newtonsoft.Json.
+- Keep endpoint interfaces and DTOs in the abstractions package aligned with feature clients and the aggregate `IInvisionApiClient`.
+- Centralize request creation, Basic authentication, telemetry, error handling, and response handling in the client infrastructure.
+- Use `ApiPathPrefix` for deployments below a base path; do not embed deployment-specific paths in endpoint clients.
+- Preserve documented 404 behavior and rethrow transport exceptions after telemetry records them.
+- Public fakes and DTO factories are consumer contracts; update them alongside relevant public API additions.
+- Never expose API keys or credentials.
+- Package IDs, target frameworks, package READMEs, generated package metadata, and NBGV configuration in `version.json` are release boundaries.
 
-## Extending
-- Add new endpoints by deriving from `BaseApi<InvisionApiClientOptions>`, adding an interface under `MX.InvisionCommunity.Api.Abstractions/Interfaces/`, registering via `AddTypedApiClient<>()` in `ServiceCollectionExtensions`, and updating `InvisionApiClient` to surface the client. Add corresponding fake and factory methods in the testing package.
+## Validation
+
+```pwsh
+dotnet build src/MX.InvisionCommunity.sln
+dotnet test src/MX.InvisionCommunity.sln --filter "FullyQualifiedName!~IntegrationTests"
+dotnet test src/MX.InvisionCommunity.sln --filter "FullyQualifiedName~MyTestClass.MyTestMethod"
+dotnet format src/MX.InvisionCommunity.sln --verify-no-changes
+```
+
+See `docs/architecture-overview.md` for composition, authentication, and endpoint behavior.
