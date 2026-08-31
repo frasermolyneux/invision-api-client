@@ -1,0 +1,12 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="MX.InvisionCommunity.Api.Abstractions/MX.InvisionCommunity.Api.Abstractions.csproj" />
+  <Project Path="MX.InvisionCommunity.Api.Client.Testing.Tests/MX.InvisionCommunity.Api.Client.Testing.Tests.csproj" />
+  <Project Path="MX.InvisionCommunity.Api.Client.Testing/MX.InvisionCommunity.Api.Client.Testing.csproj" />
+  <Project Path="MX.InvisionCommunity.Api.Client.Tests/MX.InvisionCommunity.Api.Client.Tests.csproj" />
+  <Project Path="MX.InvisionCommunity.Api.Client/MX.InvisionCommunity.Api.Client.csproj" />
+</Solution>
