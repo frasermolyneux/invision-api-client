@@ -4,7 +4,7 @@ Multi-target .NET REST client for the Invision Community API. It publishes abstr
 
 ## Locations
 
-- Solution: `src/MX.InvisionCommunity.sln`
+- Solution: `src/MX.InvisionCommunity.slnx`
 - Packages: `src/MX.InvisionCommunity.Api.Abstractions`, `src/MX.InvisionCommunity.Api.Client`, `src/MX.InvisionCommunity.Api.Client.Testing`
 - Tests: matching `*.Tests` projects under `src/`
 - Architecture and workflows: `docs/`
@@ -12,10 +12,10 @@ Multi-target .NET REST client for the Invision Community API. It publishes abstr
 ## Commands
 
 ```pwsh
-dotnet build src/MX.InvisionCommunity.sln
-dotnet test src/MX.InvisionCommunity.sln --filter "FullyQualifiedName!~IntegrationTests"
-dotnet test src/MX.InvisionCommunity.sln --filter "FullyQualifiedName~MyTestClass.MyTestMethod"
-dotnet format src/MX.InvisionCommunity.sln --verify-no-changes
+dotnet build src/MX.InvisionCommunity.slnx
+dotnet test src/MX.InvisionCommunity.slnx --filter "FullyQualifiedName!~IntegrationTests"
+dotnet test src/MX.InvisionCommunity.slnx --filter "FullyQualifiedName~MyTestClass.MyTestMethod"
+dotnet format src/MX.InvisionCommunity.slnx --verify-no-changes
 ```
 
 ## Constraints
