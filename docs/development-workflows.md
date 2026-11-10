@@ -21,7 +21,8 @@
 
 ## Versioning and releases
 - Versioning uses Nerdbank.GitVersioning (`version.json`), tagging releases as `v<semver>`.
-- Release automation runs via `release-version-and-tag.yml` then `release-publish-nuget.yml` to push the NuGet package `MX.InvisionCommunity.Api.Client`.
+- Release automation runs via `release-version-and-tag.yml` then `release-publish-nuget.yml` to publish the abstractions, client, and testing packages and their symbols to NuGet.org.
+- Publishing uses NuGet Trusted Publishing with the `NUGET_USER` repository or `NuGet` environment variable and the `NuGet` GitHub environment.
 
 ## CI/CD workflows
 - `build-and-test.yml` builds and runs the repository test projects on changes.
